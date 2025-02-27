@@ -1,0 +1,12 @@
+{
+  "name": "prompt-enhancer",
+  "version": "1.0.0",
+  "description": "Chrome extension for enhancing AI prompts using various frameworks",
+  "private": true,
+  "scripts": {
+    "generate-icons": "node create-icons.js"
+  },
+  "dependencies": {
+    "canvas": "^2.11.0"
+  }
+}

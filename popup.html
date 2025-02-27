@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Prompt Enhancer</title>
+  <meta charset="UTF-8">
+  <style>
+    :root {
+      --primary-color: #2196F3;
+      --primary-dark: #1976D2;
+      --error-color: #f44336;
+      --success-color: #4caf50;
+      --border-color: #e0e0e0;
+      --text-primary: #333;
+      --text-secondary: #666;
+      --bg-hover: #f5f5f5;
+    }
+
+    body {
+      width: 500px;
+      padding: 0;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      color: var(--text-primary);
+    }
+    
+    .container {
+      padding: 16px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-color);
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    
+    .tab {
+      padding: 12px 24px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-secondary);
+      font-size: 14px;
+      position: relative;
+    }
+    
+    .tab.active {
+      color: var(--primary-color);
+      font-weight: 500;
+    }
+    
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--primary-color);
+    }
+
+    /* Tab Content */
+    .tab-content {
+      display: none;
+      padding: 16px;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+
+    /* API Keys Section */
+    .api-keys {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .provider-section {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    
+    .provider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .provider-name {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    /* Model Selection */
+    .model-selection {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    
+    .provider-models {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .provider-name {
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .model-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .model-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .model-option:hover {
+      background: var(--bg-hover);
+    }
+
+    .model-option input[type="radio"] {
+      margin: 0;
+    }
+
+    .model-option label {
+      flex: 1;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .model-info {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* Framework Search Section */
+    .framework-search {
+      position: sticky;
+      top: 0;
+      background: white;
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+    }
+
+    .framework-search input[type="text"] {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .framework-search select {
+      padding: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 14px;
+      background: white;
+    }
+
+    /* Frameworks Section */
+    .frameworks {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding: 16px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .framework-category {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .category-title {
+      margin: 0;
+      padding: 12px 16px;
+      background: var(--bg-hover);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .framework-list {
+      padding: 8px;
+    }
+    
+    .framework-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .framework-option:hover {
+      background: var(--bg-hover);
+    }
+    
+    .framework-info {
+      flex: 1;
+    }
+    
+    .framework-name {
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+    
+    .framework-description {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .framework-category-tag {
+      display: inline-block;
+      padding: 2px 6px;
+      margin-top: 4px;
+      background: var(--primary-color);
+      color: white;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    /* Framework Selection Limit Warning */
+    .framework-limit-warning {
+      display: none;
+      padding: 8px;
+      margin: 8px 16px;
+      background: #fff3cd;
+      border: 1px solid #ffeeba;
+      border-radius: 4px;
+      color: #856404;
+      font-size: 12px;
+    }
+
+    .framework-limit-warning.visible {
+      display: block;
+    }
+
+    /* Advanced Settings */
+    .advanced-settings {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding: 16px;
+    }
+
+    .setting-section {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .setting-header {
+      margin-bottom: 12px;
+    }
+
+    .setting-header label {
+      font-weight: 600;
+      font-size: 14px;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .setting-description {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .setting-input {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .setting-input input[type="number"] {
+      width: 120px;
+      padding: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .setting-input input[type="number"]:focus {
+      border-color: var(--primary-color);
+      outline: none;
+    }
+
+    /* Common Elements */
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .primary-button {
+      background: var(--primary-color);
+      color: white;
+    }
+    
+    .primary-button:hover {
+      background: var(--primary-dark);
+    }
+    
+    .secondary-button {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+    
+    .secondary-button:hover {
+      background: #e0e0e0;
+    }
+    
+    .test-button {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+    
+    .status {
+      font-size: 12px;
+      margin-top: 4px;
+    }
+    
+    .status.success {
+      color: var(--success-color);
+    }
+    
+    .status.error {
+      color: var(--error-color);
+    }
+
+    /* Loading Overlay */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 1000;
+    }
+
+    .loading-overlay.active {
+      display: flex;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid var(--border-color);
+      border-radius: 50%;
+      border-top-color: var(--primary-color);
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 80%;
+    }
+
+    .loading-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .loading-step.active {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .loading-step.completed {
+      color: var(--success-color);
+    }
+
+    .step-indicator {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      background: white;
+    }
+
+    .loading-step.active .step-indicator {
+      border-color: var(--primary-color);
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .loading-step.completed .step-indicator {
+      border-color: var(--success-color);
+      background: var(--success-color);
+      color: white;
+    }
+
+    /* Save Button Container */
+    .save-container {
+      position: sticky;
+      bottom: 0;
+      background: white;
+      padding: 16px;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+
+    #status {
+      width: 100%;
+      text-align: center;
+      font-size: 14px;
+      min-height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="tabs">
+    <button class="tab active" data-tab="api">API Keys</button>
+    <button class="tab" data-tab="models">Models</button>
+    <button class="tab" data-tab="frameworks">Frameworks</button>
+    <button class="tab" data-tab="advanced">Advanced</button>
+  </div>
+
+  <div class="tab-content active" id="api-tab">
+    <div class="api-keys">
+      <div class="provider-section">
+        <div class="provider-header">
+          <div class="provider-name">OpenAI</div>
+          <button class="secondary-button test-button" id="test-openai">Test Connection</button>
+        </div>
+        <input type="password" id="openai-key" placeholder="Enter API key (sk-...)">
+        <div class="status" id="openai-status"></div>
+      </div>
+
+      <div class="provider-section">
+        <div class="provider-header">
+          <div class="provider-name">Google Gemini</div>
+          <button class="secondary-button test-button" id="test-gemini">Test Connection</button>
+        </div>
+        <input type="password" id="gemini-key" placeholder="Enter API key">
+        <div class="status" id="gemini-status"></div>
+      </div>
+
+      <div class="provider-section">
+        <div class="provider-header">
+          <div class="provider-name">Anthropic Claude</div>
+          <button class="secondary-button test-button" id="test-claude">Test Connection</button>
+        </div>
+        <input type="password" id="claude-key" placeholder="Enter API key">
+        <div class="status" id="claude-status"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="models-tab">
+    <div class="model-selection">
+      <!-- Gemini Models -->
+      <div class="provider-models">
+        <div class="provider-name">Gemini Models</div>
+        <div class="model-options">
+          <div class="model-option">
+            <input type="radio" id="gemini-2.0-flash" name="model" value="gemini:gemini-2.0-flash">
+            <label for="gemini-2.0-flash">Gemini 2.0 Flash</label>
+          </div>
+          <div class="model-option">
+            <input type="radio" id="gemini-1.5-flash" name="model" value="gemini:gemini-1.5-flash">
+            <label for="gemini-1.5-flash">Gemini 1.5 Flash</label>
+          </div>
+          <div class="model-option">
+            <input type="radio" id="gemini-2.0-pro-exp-02-05" name="model" value="gemini:gemini-2.0-pro-exp-02-05">
+            <label for="gemini-2.0-pro-exp-02-05">Gemini 2.0 Pro Exp 02-05</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- OpenAI Models -->
+      <div class="provider-models">
+        <div class="provider-name">OpenAI Models</div>
+        <div class="model-options">
+          <div class="model-option">
+            <input type="radio" id="openai-mini" name="model" value="openai:gpt-4o-mini">
+            <label for="openai-mini">GPT-4o Mini</label>
+          </div>
+          <div class="model-option">
+            <input type="radio" id="openai-standard" name="model" value="openai:gpt-4o">
+            <label for="openai-standard">GPT-4o</label>
+          </div>
+          <div class="model-option">
+            <input type="radio" id="openai-turbo" name="model" value="openai:gpt-3.5-turbo">
+            <label for="openai-turbo">GPT-3.5 Turbo</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Claude Models -->
+      <div class="provider-models">
+        <div class="provider-name">Claude Models</div>
+        <div class="model-options">
+          <div class="model-option">
+            <input type="radio" id="claude-sonnet" name="model" value="claude:claude-3-5-sonnet-20241022">
+            <label for="claude-sonnet">Claude 3.5 Sonnet v2</label>
+          </div>
+          <div class="model-option">
+            <input type="radio" id="claude-haiku" name="model" value="claude:claude-3-5-haiku-20241022">
+            <label for="claude-haiku">Claude 3.5 Haiku</label>
+          </div>
+          <div class="model-option">
+            <input type="radio" id="claude-3-7-sonnet" name="model" value="claude:claude-3-7-sonnet-20250219">
+            <label for="claude-3-7-sonnet">Claude 3.7 Sonnet</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="model-info" id="model-info"></div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="frameworks-tab">
+    <div class="framework-search">
+      <input type="text" id="framework-search" placeholder="Search frameworks...">
+      <select id="category-filter">
+        <option value="">All Categories</option>
+        <option value="reasoning">Reasoning & Problem-Solving</option>
+        <option value="pattern">Pattern & Structure</option>
+        <option value="refinement">Refinement & Improvement</option>
+        <option value="analysis">Analysis & Insight</option>
+      </select>
+    </div>
+
+    <div class="frameworks">
+      <!-- Reasoning & Problem-Solving Category -->
+      <div class="framework-category" data-category="reasoning">
+        <h3 class="category-title">Reasoning & Problem-Solving</h3>
+        <div class="framework-list">
+          <div class="framework-option">
+            <input type="checkbox" id="react" value="react">
+            <div class="framework-info">
+              <div class="framework-name">ReAct</div>
+              <div class="framework-description">Best for interactive problem-solving. Combines reasoning with tool/action use.</div>
+              <div class="framework-category-tag">Reasoning</div>
+            </div>
+          </div>
+
+          <div class="framework-option">
+            <input type="checkbox" id="tot" value="tot">
+            <div class="framework-info">
+              <div class="framework-name">Tree-of-Thoughts</div>
+              <div class="framework-description">Best for creativity/accuracy. Generates diverse reasoning paths.</div>
+              <div class="framework-category-tag">Reasoning</div>
+            </div>
+          </div>
+
+          <div class="framework-option">
+            <input type="checkbox" id="self_consistency" value="self_consistency">
+            <div class="framework-info">
+              <div class="framework-name">Self-Consistency</div>
+              <div class="framework-description">Best for accuracy. Improves reliability by aggregating multiple reasoning paths.</div>
+              <div class="framework-category-tag">Reasoning</div>
+            </div>
+          </div>
+
+          <div class="framework-option">
+            <input type="checkbox" id="pal" value="pal">
+            <div class="framework-info">
+              <div class="framework-name">Program-Aided Language</div>
+              <div class="framework-description">Best for math/algorithmic tasks. Uses code to structure reasoning.</div>
+              <div class="framework-category-tag">Reasoning</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pattern & Structure Category -->
+      <div class="framework-category" data-category="pattern">
+        <h3 class="category-title">Pattern & Structure</h3>
+        <div class="framework-list">
+          <div class="framework-option">
+            <input type="checkbox" id="few_shot" value="few_shot">
+            <div class="framework-info">
+              <div class="framework-name">Few-Shot Prompting</div>
+              <div class="framework-description">Best for pattern imitation. Uses examples to guide output format.</div>
+              <div class="framework-category-tag">Pattern</div>
+            </div>
+          </div>
+
+          <div class="framework-option">
+            <input type="checkbox" id="risen" value="risen">
+            <div class="framework-info">
+              <div class="framework-name">RISEN Framework</div>
+              <div class="framework-description">Best for structured outputs. Ensures consistency via role, scenario, and examples.</div>
+              <div class="framework-category-tag">Pattern</div>
+            </div>
+          </div>
+
+          <div class="framework-option">
+            <input type="checkbox" id="trace" value="trace">
+            <div class="framework-info">
+              <div class="framework-name">TRACE Framework</div>
+              <div class="framework-description">Best for clarity in complex tasks. Defines scope, role, and expectations.</div>
+              <div class="framework-category-tag">Pattern</div>
+            </div>
+          </div>
+
+          <div class="framework-option">
+            <input type="checkbox" id="coast" value="coast">
+            <div class="framework-info">
+              <div class="framework-name">COAST Framework</div>
+              <div class="framework-description">Best for business/creative tasks. Aligns outputs with context, goals, and stakeholders.</div>
+              <div class="framework-category-tag">Pattern</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Refinement & Improvement Category -->
+      <div class="framework-category" data-category="refinement">
+        <h3 class="category-title">Refinement & Improvement</h3>
+        <div class="framework-list">
+          <div class="framework-option">
+            <input type="checkbox" id="reflexion" value="reflexion">
+            <div class="framework-info">
+              <div class="framework-name">Reflexion</div>
+              <div class="framework-description">Best for iterative refinement. Encourages self-critique and improvement.</div>
+              <div class="framework-category-tag">Refinement</div>
+            </div>
+          </div>
+
+          <div class="framework-option">
+            <input type="checkbox" id="ape" value="ape">
+            <div class="framework-info">
+              <div class="framework-name">APE Framework</div>
+              <div class="framework-description">Best for iterative refinement. Generates an answer, prompts for feedback, and improves.</div>
+              <div class="framework-category-tag">Refinement</div>
+            </div>
+          </div>
+
+          <div class="framework-option">
+            <input type="checkbox" id="meta_prompting" value="meta_prompting">
+            <div class="framework-info">
+              <div class="framework-name">Meta-Prompting</div>
+              <div class="framework-description">Best for self-guided tasks. Instructs the model to generate its own prompts.</div>
+              <div class="framework-category-tag">Refinement</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analysis & Insight Category -->
+      <div class="framework-category" data-category="analysis">
+        <h3 class="category-title">Analysis & Insight</h3>
+        <div class="framework-list">
+          <div class="framework-option">
+            <input type="checkbox" id="socratic" value="socratic">
+            <div class="framework-info">
+              <div class="framework-name">Socratic Method</div>
+              <div class="framework-description">Best for ambiguity reduction. Iteratively asks questions to refine understanding.</div>
+              <div class="framework-category-tag">Analysis</div>
+            </div>
+          </div>
+
+          <div class="framework-option">
+            <input type="checkbox" id="step_back" value="step_back">
+            <div class="framework-info">
+              <div class="framework-name">Step-Back Prompting</div>
+              <div class="framework-description">Best for assumption re-evaluation. Encourages examining simpler approaches.</div>
+              <div class="framework-category-tag">Analysis</div>
+            </div>
+          </div>
+
+          <div class="framework-option">
+            <input type="checkbox" id="pain" value="pain">
+            <div class="framework-info">
+              <div class="framework-name">PAIN Framework</div>
+              <div class="framework-description">Best for problem-solving. Focuses on actionable insights for pain points.</div>
+              <div class="framework-category-tag">Analysis</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="advanced-tab">
+    <div class="advanced-settings">
+      <div class="setting-section">
+        <div class="setting-header">
+          <label for="max-tokens">Max Tokens</label>
+          <div class="setting-description">Maximum number of tokens to generate in the response.</div>
+        </div>
+        <div class="setting-input">
+          <input type="number" id="max-tokens" min="1" max="100000" value="1000">
+        </div>
+      </div>
+
+      <div class="setting-section">
+        <div class="setting-header">
+          <label for="temperature">Temperature</label>
+          <div class="setting-description">Controls randomness in responses. Higher values (e.g. 0.8) make output more random, lower values (e.g. 0.2) make it more focused.</div>
+        </div>
+        <div class="setting-input">
+          <input type="number" id="temperature" min="0" max="1" step="0.1" value="0.7">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="save-container">
+    <button id="save-settings" class="primary-button">Save Settings</button>
+  </div>
+
+  <div class="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-steps">
+      <div class="loading-step" data-step="initialize">
+        <div class="step-indicator">1</div>
+        <span>Initializing</span>
+      </div>
+      <div class="loading-step" data-step="process">
+        <div class="step-indicator">2</div>
+        <span>Processing with LLM</span>
+      </div>
+      <div class="loading-step" data-step="framework">
+        <div class="step-indicator">3</div>
+        <span>Applying Framework</span>
+      </div>
+      <div class="loading-step" data-step="refine">
+        <div class="step-indicator">4</div>
+        <span>Refining Output</span>
+      </div>
+      <div class="loading-step" data-step="complete">
+        <div class="step-indicator">5</div>
+        <span>Completing</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

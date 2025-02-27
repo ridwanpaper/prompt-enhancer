@@ -1,0 +1,56 @@
+{
+  "manifest_version": 3,
+  "name": "AI Prompt Enhancer",
+  "description": "Enhance your AI prompts using various frameworks",
+  "version": "1.0",
+  "permissions": [
+    "contextMenus",
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://api.openai.com/*",
+    "https://generativelanguage.googleapis.com/v1beta/*",
+    "https://api.anthropic.com/*",
+    "https://*/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "service_worker": "background/index.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": [],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "config/*",
+        "services/*",
+        "utils/*",
+        "background/*",
+        "icons/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
