@@ -69,7 +69,11 @@ export const llmConfigs = {
     parseResponse: (data, model) => ({
       text: data.candidates[0].content.parts[0].text,
       model: model,
-      usage: data.usage || {}
+      usage: {
+        total_tokens: data.usageMetadata?.totalTokenCount || 0,
+        prompt_tokens: data.usageMetadata?.promptTokenCount || 0,
+        completion_tokens: data.usageMetadata?.candidatesTokenCount || 0
+      }
     })
   },
 
@@ -104,7 +108,11 @@ export const llmConfigs = {
     parseResponse: (data) => ({
       text: data.content[0].text,
       model: data.model,
-      usage: data.usage || {}
+      usage: {
+        total_tokens: (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0),
+        prompt_tokens: data.usage?.input_tokens || 0,
+        completion_tokens: data.usage?.output_tokens || 0
+      }
     })
   },
 
