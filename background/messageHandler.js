@@ -1,6 +1,7 @@
 import * as openai from '../services/openai.js';
 import * as gemini from '../services/gemini.js';
 import * as claude from '../services/claude.js';
+import * as deepseek from '../services/deepseek.js';
 import { formatErrorMessage } from '../utils/apiUtils.js';
 
 // Default framework when none selected
@@ -141,7 +142,8 @@ async function handleConnectionTest(service, apiKey) {
   const services = {
     openai,
     gemini,
-    claude
+    claude,
+    deepseek
   };
 
   if (!services[service]) {
@@ -176,7 +178,7 @@ async function handlePromptEnhancement(text, frameworks) {
     throw new Error('No model selected. Please select a model in extension settings.');
   }
   const service = getServiceForModel(model);
-  const services = { openai, gemini, claude };
+  const services = { openai, gemini, claude, deepseek };
 
   console.log(`Enhancing prompt with frameworks:`, frameworksToUse);
   console.log(`Using service: ${service}, model: ${model}`);
@@ -310,6 +312,8 @@ function getServiceForModel(model) {
     service = 'gemini';
   } else if (model.startsWith('claude-')) {
     service = 'claude';
+  } else if (model.startsWith('deepseek-')) {
+    service = 'deepseek';
   } else {
     throw new Error(`Unknown model format: ${model}`);
   }

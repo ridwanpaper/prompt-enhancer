@@ -1,6 +1,6 @@
 # AI Prompt Enhancer Chrome Extension
 
-A Chrome extension that helps enhance your AI prompts using various frameworks like Chain-of-Thought (CoT), RISEN, and APE. The extension works with popular AI platforms like ChatGPT, Google Gemini, and Anthropic Claude.
+A Chrome extension that helps enhance your AI prompts using various frameworks like Chain-of-Thought (CoT), RISEN, and APE. The extension works with popular AI platforms like ChatGPT, Google Gemini, Anthropic Claude, and DeepSeek.
 
 ## Features
 
@@ -12,6 +12,7 @@ A Chrome extension that helps enhance your AI prompts using various frameworks l
   - OpenAI: GPT-4o, GPT-4o Mini, GPT-3.5 Turbo
   - Google Gemini: Gemini 2.0 Flash, Gemini 1.5 Flash, Gemini 2.0 Pro
   - Anthropic Claude: Claude 3.7 Sonnet, Claude 3.5 Haiku, Claude 3.5 Sonnet
+  - DeepSeek: DeepSeek Chat, DeepSeek Reasoner
 - Right-click context menu integration
 - Easy-to-use popup interface
 - Secure API key storage
@@ -93,6 +94,13 @@ npm run generate-icons
 4. Click "Create Key"
 5. Copy the generated API key
 
+### DeepSeek API Key
+1. Visit [DeepSeek's Platform](https://platform.deepseek.com/)
+2. Sign up or log in to your account
+3. Navigate to the API section
+4. Generate a new API key
+5. Copy the generated API key (starts with 'sk-')
+
 ## Configuration
 
 1. Click the extension icon in Chrome's toolbar
@@ -103,9 +111,10 @@ npm run generate-icons
    - Choose up to 3 frameworks for prompt enhancement
    - Each framework is optimized for different types of tasks
 4. Optional: Configure default models for each provider
-   - OpenAI: Choose between GPT-4o, GPT-4o Mini, or GPT-3.5 Turbo
-   - Gemini: Select from Gemini 2.0 Flash, 1.5 Flash, or 2.0 Pro
-   - Claude: Pick from Claude 3.7 Sonnet, 3.5 Haiku, or 3.5 Sonnet
+    - OpenAI: Choose between GPT-4o, GPT-4o Mini, or GPT-3.5 Turbo
+    - Gemini: Select from Gemini 2.0 Flash, 1.5 Flash, or 2.0 Pro
+    - Claude: Pick from Claude 3.7 Sonnet, 3.5 Haiku, or 3.5 Sonnet
+    - DeepSeek: Select from DeepSeek Chat or DeepSeek Reasoner
 
 ## Usage
 

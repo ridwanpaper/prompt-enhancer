@@ -516,6 +516,15 @@
         <input type="password" id="claude-key" placeholder="Enter API key">
         <div class="status" id="claude-status"></div>
       </div>
+
+      <div class="provider-section">
+        <div class="provider-header">
+          <div class="provider-name">DeepSeek</div>
+          <button class="secondary-button test-button" id="test-deepseek">Test Connection</button>
+        </div>
+        <input type="password" id="deepseek-key" placeholder="Enter API key (sk-...)">
+        <div class="status" id="deepseek-status"></div>
+      </div>
     </div>
   </div>
 
@@ -574,6 +583,21 @@
           <div class="model-option">
             <input type="radio" id="claude-3-7-sonnet" name="model" value="claude:claude-3-7-sonnet-20250219">
             <label for="claude-3-7-sonnet">Claude 3.7 Sonnet</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- DeepSeek Models -->
+      <div class="provider-models">
+        <div class="provider-name">DeepSeek Models</div>
+        <div class="model-options">
+          <div class="model-option">
+            <input type="radio" id="deepseek-chat" name="model" value="deepseek:deepseek-chat">
+            <label for="deepseek-chat">DeepSeek Chat</label>
+          </div>
+          <div class="model-option">
+            <input type="radio" id="deepseek-reasoner" name="model" value="deepseek:deepseek-reasoner">
+            <label for="deepseek-reasoner">DeepSeek Reasoner</label>
           </div>
         </div>
       </div>

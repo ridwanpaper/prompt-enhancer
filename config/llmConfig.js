@@ -106,6 +106,38 @@ export const llmConfigs = {
       model: data.model,
       usage: data.usage || {}
     })
+  },
+
+  deepseek: {
+    name: 'DeepSeek',
+    families: {
+      Text: {
+        name: 'Text Generation',
+        models: [
+          { id: 'deepseek-chat', name: 'DeepSeek Chat', maxTokens: 1000 },
+          { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner', maxTokens: 1000 }
+        ]
+      }
+    },
+    endpoints: {
+      chat: 'https://api.deepseek.com/chat/completions'
+    },
+    getHeaders: (apiKey) => ({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    }),
+    formatRequest: (model, messages, options = {}) => ({
+      model,
+      messages: Array.isArray(messages) ? messages : [{ role: 'user', content: messages }],
+      temperature: options.temperature || 0.7,
+      max_tokens: options.maxTokens || 1000,
+      stream: false
+    }),
+    parseResponse: (data) => ({
+      text: data.choices[0].message.content,
+      model: data.model,
+      usage: data.usage || {}
+    })
   }
 };
 

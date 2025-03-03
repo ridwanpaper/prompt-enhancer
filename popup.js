@@ -84,7 +84,7 @@ frameworkLimitWarning.textContent = 'Maximum 3 frameworks can be selected';
 document.querySelector('.framework-search').after(frameworkLimitWarning);
 
 // API key inputs and test buttons
-const providers = ['openai', 'gemini', 'claude'];
+const providers = ['openai', 'gemini', 'claude', 'deepseek'];
 const apiInputs = {};
 const testButtons = {};
 const testStatus = {};
