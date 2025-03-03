@@ -114,7 +114,7 @@ npm run generate-icons
     - OpenAI: Choose between GPT-4o, GPT-4o Mini, or GPT-3.5 Turbo
     - Gemini: Select from Gemini 2.0 Flash, 1.5 Flash, or 2.0 Pro
     - Claude: Pick from Claude 3.7 Sonnet, 3.5 Haiku, or 3.5 Sonnet
-    - DeepSeek: Select from DeepSeek Chat or DeepSeek Reasoner
+    - DeepSeek: Select from DeepSeek Chat (v3) or DeepSeek Reasoner (R1)
 
 ## Usage
 
