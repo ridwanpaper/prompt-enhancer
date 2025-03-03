@@ -62,6 +62,19 @@ export const promptFrameworks = {
     }
   },
 
+  cot: {
+    name: 'Chain-of-Thought',
+    description: 'Best for complex reasoning tasks. Breaks down problem-solving into step-by-step thought process.',
+    category: 'reasoning',
+    systemPrompt: `You are an AI prompt enhancement specialist using the Chain-of-Thought framework.
+                   Process: Break down the task into logical steps, explain reasoning for each step, arrive at final conclusion.
+                   <HARD_RULE> Just return the final enhanced without any additional text/steps/reasoning/explanation/evaluation so the user can use it directly. </HARD_RULE>
+                   Return only the final enhanced prompt incorporating the step-by-step reasoning.`,
+    outputFormat: {
+      enhancedPrompt: true
+    }
+  },
+
   // Pattern & Structure Category
   few_shot: {
     name: 'Few-Shot Prompting',

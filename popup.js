@@ -71,7 +71,7 @@ document.querySelector('.save-container').insertBefore(statusDiv, document.query
 const frameworkSearch = document.getElementById('framework-search');
 const categoryFilter = document.getElementById('category-filter');
 const frameworkCheckboxes = [
-  'react', 'tot', 'self_consistency', 'pal',           // Reasoning
+  'react', 'tot', 'self_consistency', 'pal', 'cot',    // Reasoning
   'few_shot', 'risen', 'trace', 'coast',              // Pattern
   'reflexion', 'ape', 'meta_prompting',               // Refinement
   'socratic', 'step_back', 'pain'                     // Analysis

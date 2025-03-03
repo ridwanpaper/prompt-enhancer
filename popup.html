@@ -186,14 +186,14 @@
       flex-direction: column;
       gap: 24px;
       padding: 16px;
-      max-height: 500px;
-      overflow-y: auto;
     }
 
     .framework-category {
       border: 1px solid var(--border-color);
       border-radius: 8px;
       overflow: hidden;
+      max-height: 300px;
+      overflow-y: auto;
     }
 
     .category-title {
@@ -631,6 +631,15 @@
             <div class="framework-info">
               <div class="framework-name">Program-Aided Language</div>
               <div class="framework-description">Best for math/algorithmic tasks. Uses code to structure reasoning.</div>
+              <div class="framework-category-tag">Reasoning</div>
+            </div>
+          </div>
+
+          <div class="framework-option">
+            <input type="checkbox" id="cot" value="cot">
+            <div class="framework-info">
+              <div class="framework-name">Chain-of-Thought</div>
+              <div class="framework-description">Best for complex reasoning tasks. Breaks down problem-solving into step-by-step thought process.</div>
               <div class="framework-category-tag">Reasoning</div>
             </div>
           </div>
