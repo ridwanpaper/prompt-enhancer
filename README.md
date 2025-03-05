@@ -57,19 +57,12 @@ Examples of prompt enhancement in action, showing before and after results.
 1. Clone this repository:
 ```bash
 git clone https://github.com/ridwanpaper/prompt-enhancer.git
-cd prompt-enhancer
 ```
 
-2. Install dependencies and generate icons:
-```bash
-npm install
-npm run generate-icons
-```
-
-3. Load the extension in Chrome:
+2. Load the extension in Chrome:
    - Open Chrome and go to `chrome://extensions/`
    - Enable "Developer mode" in the top right
-   - Click "Load unpacked" and select the `prompt-enhancer` directory
+   - Click "Load unpacked" and select the `prompt-enhancer` directory (from step 1)
 
 ## Getting API Keys
 
